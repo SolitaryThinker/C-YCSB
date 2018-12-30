@@ -1,0 +1,8 @@
+#ifndef CYCSB_GENERATOR_ZIPFIAN_GENERATOR_H_
+#define CYCSB_GENERATOR_ZIPFIAN_GENERATOR_H_
+
+namespace cycsb {
+
+}  // cycsb
+
+#endif  // CYCSB_GENERATOR_ZIPFIAN_GENERATOR_H_

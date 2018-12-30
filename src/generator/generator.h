@@ -1,7 +1,7 @@
-#ifndef GENERATOR_H_
-#define GENERATOR_H_
+#ifndef CYCSB_GENERATOR_GENERATOR_H_
+#define CYCSB_GENERATOR_GENERATOR_H_
 
-namespace ycsbc {
+namespace cycsb {
 
 template <typename Value>
 class Generator {
@@ -11,6 +11,6 @@ class Generator {
         virtual ~Generator() { }
 };
 
-} // cycsb
+}  // cycsb
 
-#endif // GENERATOR_H_
+#endif  // CYCSB_GENERATOR_GENERATOR_H_

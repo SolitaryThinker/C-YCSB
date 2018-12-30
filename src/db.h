@@ -1,5 +1,5 @@
-#ifndef DB_H_
-#define DB_H_
+#ifndef CYCSB_DB_H_
+#define CYCSB_DB_H_
 
 namespace cycsb {
 
@@ -83,4 +83,4 @@ class DB {
 };
 
 }  // namespace cycsb
-#endif DB_H_  // DB_H_
+#endif  // CYCSB_DB_H_

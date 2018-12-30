@@ -1,10 +1,10 @@
-#ifndef CONST_GENERATOR_H_
-#define CONST_GENERATOR_H_
+#ifndef CYCSB_GENERATOR_CONST_GENERATOR_H_
+#define CYCSB_GENERATOR_CONST_GENERATOR_H_
 
 #include "generator.h"
 #include <cstdint>
 
-namespace ycsbc {
+namespace cycsb {
 
 class ConstGenerator : public Generator<uint64_t> {
     public:
@@ -15,6 +15,6 @@ class ConstGenerator : public Generator<uint64_t> {
         uint64_t constant_;
 };
 
-} // ycsbc
+}  // cycsb
 
-#endif // CONST_GENERATOR_H_
+#endif  // CYCSB_GENERATOR_CONST_GENERATOR_H_
