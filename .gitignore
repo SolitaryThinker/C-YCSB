@@ -31,3 +31,6 @@ build/
 *.exe
 *.out
 *.app
+
+template.h
+tmp.cc
