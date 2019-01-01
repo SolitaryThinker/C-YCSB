@@ -7,20 +7,19 @@
 //  Copyright (c) 2014 Jinglei Ren <jinglei@ren.systems>.
 //
 
-#include "db_factory.h"
+#include "core/db_factory.h"
+#include "util/properties.h"
 
-#include "db/pebblesdb_client.h"
-#include "utils.h"
+#include "clients/pebblesdb_client.h"
 
-//using namespace std;
-using ycsbc::DB;
-using ycsbc::DBFactory;
+namespace cycsb {
 
 DB* DBFactory::CreateDB(utils::Properties &props) {
   if (props["dbname"] == "pebblesdb") {
-    return new PebblesDB;
+    return new PebblesDBClient;
   } else {
     return NULL;
   }
 }
 
+}  // namespace cycsb

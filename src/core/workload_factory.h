@@ -1,9 +1,8 @@
 #ifndef CYCSB_WORKLOADS_WORKLOAD_FACTORY_H_
 #define CYCSB_WORKLOADS_WORKLOAD_FACTORY_H_
 
-//#include "workload.h"
-#include "core/properties.h"
-#include "utils.h"
+#include "core/workload.h"
+#include "util/properties.h"
 
 namespace cycsb {
 

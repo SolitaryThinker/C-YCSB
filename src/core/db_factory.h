@@ -10,9 +10,8 @@
 #ifndef CYCSB_DB_FACTORY_H_
 #define CYCSB_DB_FACTORY_H_
 
-#include "db.h"
-#include "core/properties.h"
-#include "utils.h"
+#include "core/db.h"
+#include "util/properties.h"
 
 namespace cycsb {
 
