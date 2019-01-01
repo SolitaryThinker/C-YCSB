@@ -11,8 +11,13 @@ message(STATUS "CMAKE_SOURCE_DIR:    " ${CMAKE_SOURCE_DIR})
 set(PROJECT_SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
 message(STATUS "PROJECT_SOURCE_DIR:  " ${PROJECT_SOURCE_DIR})
 
+include_directories(
+    "${PROJECT_SOURCE_DIR}"
+)
+
 add_executable(cycsb
-    "${PROJECT_SOURCE_DIR}/main.cc"
-    "${PROJECT_SOURCE_DIR}/db.cc"
+    "${PROJECT_SOURCE_DIR}/cycsb.cc"
+    #"${PROJECT_SOURCE_DIR}/db.cc"
+    #"${PROJECT_SOURCE_DIR}/db.cc"
     #"${PROJECT_SOURCE_DIR}/generator/generator.cc"
-    )
+)
