@@ -17,6 +17,7 @@ std::string ParseCommandLine(int argc, const char *argv[], utils::Properties &pr
 
 int main(const int argc, const char *argv[]) {
   utils::Properties props;
+
   std::string file_name = ParseCommandLine(argc, argv, props);
 
   cycsb::DB *db = cycsb::DBFactory::CreateDB(props);
@@ -27,7 +28,7 @@ int main(const int argc, const char *argv[]) {
 
   cycsb::Workload *workload = cycsb::WorkloadFactory::CreateWorkload(props);
   if (!workload) {
-    std::cout << "Unknown workload class name " << props["workloadclass"] << std::endl;
+    std::cout << "Unknown workload class name " << props["workload"] << std::endl;
     exit(1);
   }
 
@@ -77,6 +78,14 @@ std::string ParseCommandLine(int argc, const char *argv[], utils::Properties &pr
         exit(0);
       }
       props.SetProperty("slaves", argv[argindex]);
+      argindex++;
+    } else if (strcmp(argv[argindex], "-wl") == 0) {
+      argindex++;
+      if (argindex >= argc) {
+        UsageMessage(argv[0]);
+        exit(0);
+      }
+      props.SetProperty("workload", argv[argindex]);
       argindex++;
     } else if (strcmp(argv[argindex], "-P") == 0) {
       argindex++;
