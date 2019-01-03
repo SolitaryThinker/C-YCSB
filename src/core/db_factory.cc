@@ -10,7 +10,7 @@
 #include "core/db_factory.h"
 #include "util/properties.h"
 
-#include "clients/pebblesdb_client.h"
+#include "clients/pebblesdb/pebblesdb_client.h"
 
 namespace cycsb {
 

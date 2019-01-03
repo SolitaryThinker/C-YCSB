@@ -7,8 +7,8 @@
 //  Copyright (c) 2014 Jinglei Ren <jinglei@ren.systems>.
 //
 
-#ifndef CYCSB_DB_FACTORY_H_
-#define CYCSB_DB_FACTORY_H_
+#ifndef CYCSB_CORE_DB_FACTORY_H_
+#define CYCSB_CORE_DB_FACTORY_H_
 
 #include "core/db.h"
 #include "util/properties.h"
@@ -22,4 +22,4 @@ class DBFactory {
 
 } // namespace cycsb
 
-#endif // CYCSB_DB_FACTORY_H_
+#endif // CYCSB_CORE_DB_FACTORY_H_

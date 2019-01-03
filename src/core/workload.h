@@ -11,10 +11,10 @@ namespace cycsb {
 
 class Workload {
   public:
-    static const std::string kInsertStartProperty = "insertstart";
-    static const std::string kInsertCountProperty = "insertstart";
+    static const std::string kInsertStartProperty;
+    static const std::string kInsertCountProperty;
 
-    static const std::string kInsertStartPropertyDefault = "0";
+    static const std::string kInsertStartPropertyDefault;
 
     enum Operation {
       INSERT,
@@ -45,7 +45,7 @@ class Workload {
       return stop_requested_;
     }
   private:
-    std::atomic<bool> stop_requested_ = false;
+    std::atomic<bool> stop_requested_{false};
 };
 
 }  // namespace cycsb
