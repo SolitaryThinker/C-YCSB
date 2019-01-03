@@ -1,6 +1,6 @@
 #include "zipfian_generator.h"
 
-#include "utils.h"
+#include "util/utils.h"
 
 namespace cycsb {
 
