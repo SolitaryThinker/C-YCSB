@@ -20,6 +20,7 @@ void PebblesDBClient::Init() {
 }
 
 void PebblesDBClient::Close() {
+  delete db_;
 }
 
 int PebblesDBClient::Read(const std::string &table, const std::string &key,
