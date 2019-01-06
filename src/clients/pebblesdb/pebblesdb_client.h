@@ -14,20 +14,20 @@ class PebblesDBClient : public DB {
 
     void Close() override;
 
-    int Read(const std::string &table, const std::string &key,
+    Status Read(const std::string &table, const std::string &key,
              std::string &result) override;
 
-    int Scan(const std::string &table, const std::string &key,
+    Status Scan(const std::string &table, const std::string &key,
              int record_count,
              std::vector<std::vector<KVPair>> &results) override;
 
-    int Update(const std::string &table, const std::string &key,
+    Status Update(const std::string &table, const std::string &key,
                const std::string &value) override;
 
-    int Insert(const std::string &table, const std::string &key,
+    Status Insert(const std::string &table, const std::string &key,
                const std::string &values) override;
 
-    int Delete(const std::string &table, const std::string &key) override;
+    Status Delete(const std::string &table, const std::string &key) override;
   private:
     static leveldb::DB *db_;
 };

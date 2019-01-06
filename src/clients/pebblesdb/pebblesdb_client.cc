@@ -25,24 +25,32 @@ void PebblesDBClient::Close() {
   delete db_;
 }
 
-int PebblesDBClient::Read(const std::string &table, const std::string &key,
+Status PebblesDBClient::Read(const std::string &table, const std::string &key,
                           std::string &result) {
+  leveldb::ReadOptions options;
+  if (db_->Get(options, key, &result).ok()) {
+    return Status::ok;
+  } else {
+    // TODO: add support for other status types
+    return Status::error;
+  }
 }
 
-int PebblesDBClient::Scan(const std::string &table, const std::string &key,
+Status PebblesDBClient::Scan(const std::string &table, const std::string &key,
                           int record_count,
                           std::vector<std::vector<KVPair>> &results) {
 }
 
-int PebblesDBClient::Update(const std::string &table, const std::string &key,
+Status PebblesDBClient::Update(const std::string &table, const std::string &key,
                             const std::string &value) {
 }
 
-int PebblesDBClient::Insert(const std::string &table, const std::string &key,
+Status PebblesDBClient::Insert(const std::string &table, const std::string &key,
                             const std::string &value) {
+
 }
 
-int PebblesDBClient::Delete(const std::string &table, const std::string &key) {
+Status PebblesDBClient::Delete(const std::string &table, const std::string &key) {
 }
 
 }  // namespace cycsb

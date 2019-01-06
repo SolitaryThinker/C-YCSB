@@ -10,7 +10,7 @@
 #ifndef CYCSB_DB_H_
 #define CYCSB_DB_H_
 
-#include<util/not_implemented.h>
+#include<util/status.h>
 
 #include<vector>
 #include<string>
@@ -46,10 +46,10 @@ class DB {
     // @param result A vector of field/value pairs for the result.
     // @return Zero on success, or a non-zero error code on error/record-miss.
     //
-    virtual int ReadRecord(const std::string &table, const std::string &key,
+    virtual Status ReadRecord(const std::string &table, const std::string &key,
                      const std::vector<std::string> *fields,
                      std::vector<KVPair> &result) {
-      throw util::NotImplementedException();
+      return Status::not_implemented;
     }
     //
     // Performs a range scan for a set of records in the database.
@@ -63,10 +63,10 @@ class DB {
     //        pairs for one record
     // @return Zero on success, or a non-zero error code on error.
     //
-    virtual int ScanRecords(const std::string &table, const std::string &key,
+    virtual Status ScanRecords(const std::string &table, const std::string &key,
                             int record_count, const std::vector<std::string> *fields,
                             std::vector<std::vector<KVPair>> &result) {
-      throw util::NotImplementedException();
+      return Status::not_implemented;
     }
     //
     // Updates a record in the database.
@@ -78,9 +78,9 @@ class DB {
     // @param values A vector of field/value pairs to update in the record.
     // @return Zero on success, a non-zero error code on error.
     //
-    virtual int UpdateRecord(const std::string &table, const std::string &key,
+    virtual Status UpdateRecord(const std::string &table, const std::string &key,
                              std::vector<KVPair> &values) {
-      throw util::NotImplementedException();
+      return Status::not_implemented;
     }
     //
     // Inserts a record into the database.
@@ -91,9 +91,9 @@ class DB {
     // @param values A vector of field/value pairs to insert in the record.
     // @return Zero on success, a non-zero error code on error.
     //
-    virtual int InsertRecord(const std::string &table, const std::string &key,
+    virtual Status InsertRecord(const std::string &table, const std::string &key,
                              std::vector<KVPair> &values) {
-      throw util::NotImplementedException();
+      return Status::not_implemented;
     }
     //
     // Deletes a record from the database.
@@ -102,33 +102,33 @@ class DB {
     // @param key The key of the record to delete.
     // @return Zero on success, a non-zero error code on error.
     //
-    virtual int DeleteRecord(const std::string &table, const std::string &key) {
-      throw util::NotImplementedException();
+    virtual Status DeleteRecord(const std::string &table, const std::string &key) {
+      return Status::not_implemented;
     }
 
-    virtual int Read(const std::string &table, const std::string &key,
+    virtual Status Read(const std::string &table, const std::string &key,
                      std::string &result) {
-      throw util::NotImplementedException();
+      return Status::not_implemented;
     }
 
-    virtual int Scan(const std::string &table, const std::string &key,
+    virtual Status Scan(const std::string &table, const std::string &key,
                      int record_count,
                      std::vector<std::vector<KVPair>> &results) {
-      throw util::NotImplementedException();
+      return Status::not_implemented;
     }
 
-    virtual int Update(const std::string &table, const std::string &key,
+    virtual Status Update(const std::string &table, const std::string &key,
                        const std::string &value) {
-      throw util::NotImplementedException();
+      return Status::not_implemented;
     }
 
-    virtual int Insert(const std::string &table, const std::string &key,
+    virtual Status Insert(const std::string &table, const std::string &key,
                        const std::string &value) {
-      throw util::NotImplementedException();
+      return Status::not_implemented;
     }
 
-    virtual int Delete(const std::string &table, const std::string &key) {
-      throw util::NotImplementedException();
+    virtual Status Delete(const std::string &table, const std::string &key) {
+      return Status::not_implemented;
     }
 
 
