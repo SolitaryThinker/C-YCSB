@@ -1,5 +1,7 @@
 #include "pebblesdb_client.h"
 
+#include "pebblesdb/options.h"
+
 #include <iostream>
 
 namespace cycsb {
@@ -24,22 +26,20 @@ void PebblesDBClient::Close() {
 }
 
 int PebblesDBClient::Read(const std::string &table, const std::string &key,
-                          const std::vector<std::string> *fields,
-                          std::vector<KVPair> &result) {
+                          std::string &result) {
 }
 
 int PebblesDBClient::Scan(const std::string &table, const std::string &key,
                           int record_count,
-                          const std::vector<std::string> *fields,
-                          std::vector<std::vector<KVPair>> &result) {
+                          std::vector<std::vector<KVPair>> &results) {
 }
 
 int PebblesDBClient::Update(const std::string &table, const std::string &key,
-                            std::vector<KVPair> &values) {
+                            const std::string &value) {
 }
 
 int PebblesDBClient::Insert(const std::string &table, const std::string &key,
-                            std::vector<KVPair> &values) {
+                            const std::string &value) {
 }
 
 int PebblesDBClient::Delete(const std::string &table, const std::string &key) {
