@@ -29,6 +29,8 @@ add_executable(cycsb
 
     "${PROJECT_SOURCE_DIR}/generator/zipfian_generator.cc"
 
+    "${PROJECT_SOURCE_DIR}/util/status.cc"
+
     "${PROJECT_SOURCE_DIR}/workloads/core_workload.cc"
 )
 
