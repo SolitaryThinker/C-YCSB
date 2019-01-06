@@ -15,22 +15,22 @@ class Status {
     bool operator==(const Status &other_status);
     bool operator!=(const Status &other_status);
 
-    bool IsOk() { return *this == OK || *this == BATCHED_OK; }
+    bool IsOk() { return *this == ok || *this == batched_ok; }
 
     std::string GetName() const { return name_; }
     std::string GetDescription() const { return description_; }
 
     std::string ToString() const;
 
-    static const Status OK;
-    static const Status ERROR;
-    static const Status NOT_FOUND;
-    static const Status NOT_IMPLEMENTED;
-    static const Status UNEXPECTED_STATE;
-    static const Status BAD_REQUEST;
-    static const Status FORBIDDEN;
-    static const Status SERVICE_UNAVAILABLE;
-    static const Status BATCHED_OK;
+    static const Status ok;
+    static const Status error;
+    static const Status not_found;
+    static const Status not_implemented;
+    static const Status unexpected_state;
+    static const Status bad_request;
+    static const Status forbidden;
+    static const Status service_unavailable;
+    static const Status batched_ok;
 
   private:
     const std::string name_;
