@@ -14,7 +14,7 @@ void PebblesDBClient::Init() {
     options.create_if_missing = true;
 
     leveldb::Status status = leveldb::DB::Open(options,
-                                               "tmp/pebblesdb_database", &db_);
+                                               "pebblesdb_database", &db_);
     if (!status.ok()) {
       std::cout << "Failed to open database" << std::endl;
     }
@@ -28,7 +28,9 @@ void PebblesDBClient::Close() {
 Status PebblesDBClient::Read(const std::string &table, const std::string &key,
                           std::string &result) {
   leveldb::ReadOptions options;
-  if (db_->Get(options, key, &result).ok()) {
+
+  leveldb::Status status = db_->Get(options, key, &result);
+  if (status.ok()) {
     return Status::ok;
   } else {
     // TODO: add support for other status types
@@ -39,18 +41,29 @@ Status PebblesDBClient::Read(const std::string &table, const std::string &key,
 Status PebblesDBClient::Scan(const std::string &table, const std::string &key,
                           int record_count,
                           std::vector<std::vector<KVPair>> &results) {
+  return Status::not_implemented;
 }
 
 Status PebblesDBClient::Update(const std::string &table, const std::string &key,
                             const std::string &value) {
+  return Status::not_implemented;
 }
 
 Status PebblesDBClient::Insert(const std::string &table, const std::string &key,
                             const std::string &value) {
+  leveldb::WriteOptions options;
 
+  leveldb::Status status = db_->Put(options, key, leveldb::Slice(value));
+  if (status.ok()) {
+    return Status::ok;
+  } else {
+    // TODO: add support for other status types
+    return Status::error;
+  }
 }
 
 Status PebblesDBClient::Delete(const std::string &table, const std::string &key) {
+  return Status::not_implemented;
 }
 
 }  // namespace cycsb

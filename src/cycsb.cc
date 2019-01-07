@@ -34,12 +34,13 @@ int main(const int argc, const char *argv[]) {
     exit(1);
   }
 
+  db->Init();
+
   cycsb::Workload *workload = cycsb::WorkloadFactory::CreateWorkload(props);
   if (!workload) {
     std::cout << "Unknown workload class name " << props["workload"] << std::endl;
     exit(1);
   }
-
 }
 
 

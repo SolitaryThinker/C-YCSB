@@ -37,12 +37,12 @@ class Status {
     const std::string description_;
 };
 
-bool Status::operator==(const Status &other_status) {
+inline bool Status::operator==(const Status &other_status) {
   return name_ == other_status.name_ &&
          description_ == other_status.description_;
 }
 
-bool Status::operator!=(const Status &other_status) {
+inline bool Status::operator!=(const Status &other_status) {
   return !(*this == other_status);
 }
 
