@@ -1,24 +1,149 @@
 #ifndef CYCSB_WORKLOADS_CORE_WORKLOAD_H_
 #define CYCSB_WORKLOADS_CORE_WORKLOAD_H_
 
+#include "generator/generator.h"
+#include "generator/discrete_generator.h"
+#include "generator/counter_generator.h"
 #include "core/workload.h"
 
 namespace cycsb {
 
 class CoreWorkload : public Workload {
   public:
-    void Init(utils::Properties p);
+    ///
+    /// The name of the database table to run queries against.
+    ///
+    static const std::string tablename_property;
+    static const std::string tablename_default;
+
+    ///
+    /// The name of the property for the number of fields in a record.
+    ///
+    static const std::string field_count_property;
+    static const std::string field_count_default;
+
+    ///
+    /// The name of the property for the field length distribution.
+    /// Options are "uniform", "zipfian" (favoring short records), and "constant".
+    ///
+    static const std::string field_length_distribution_property;
+    static const std::string field_length_distribution_default;
+
+    ///
+    /// The name of the property for the length of a field in bytes.
+    ///
+    static const std::string field_length_property;
+    static const std::string field_length_default;
+
+    ///
+    /// The name of the property for deciding whether to read one field (false)
+    /// or all fields (true) of a record.
+    ///
+    static const std::string read_all_fields_property;
+    static const std::string read_all_fields_default;
+
+    ///
+    /// The name of the property for deciding whether to write one field (false)
+    /// or all fields (true) of a record.
+    ///
+    static const std::string write_all_fields_property;
+    static const std::string write_all_fields_default;
+
+    ///
+    /// The name of the property for the proportion of read transactions.
+    ///
+    static const std::string read_proportion_property;
+    static const std::string read_proportion_default;
+
+    ///
+    /// The name of the property for the proportion of update transactions.
+    ///
+    static const std::string update_proportion_property;
+    static const std::string update_proportion_default;
+
+    ///
+    /// The name of the property for the proportion of insert transactions.
+    ///
+    static const std::string insert_proportion_property;
+    static const std::string insert_proportion_default;
+
+    ///
+    /// The name of the property for the proportion of scan transactions.
+    ///
+    static const std::string scan_proportion_property;
+    static const std::string scan_proportion_default;
+
+    ///
+    /// The name of the property for the proportion of
+    /// read-modify-write transactions.
+    ///
+    static const std::string readmodifywrite_proportion_property;
+    static const std::string readmodifywrite_proportion_default;
+
+    ///
+    /// The name of the property for the the distribution of request keys.
+    /// Options are "uniform", "zipfian" and "latest".
+    ///
+    static const std::string request_distribution_property;
+    static const std::string request_distribution_default;
+
+    ///
+    /// The name of the property for the max scan length (number of records).
+    ///
+    static const std::string max_scan_length_property;
+    static const std::string max_scan_length_default;
+
+    ///
+    /// The name of the property for the scan length distribution.
+    /// Options are "uniform" and "zipfian" (favoring short scans).
+    ///
+    static const std::string scan_length_distribution_property;
+    static const std::string scan_length_distribution_default;
+
+    ///
+    /// The name of the property for the order to insert records.
+    /// Options are "ordered" or "hashed".
+    ///
+    static const std::string insert_order_property;
+    static const std::string insert_order_default;
+
+    static const std::string insert_start_property;
+    static const std::string insert_start_default;
+
+    static const std::string record_count_property;
+    static const std::string operation_count_property;
+
+    ///
+    /// Initialize the scenario.
+    /// Called once, in the main client thread, before any operations are started.
+    ///
+    void Init(utils::Properties p) override;
 
     //ThreadState* InitThread(utils::Properties p, int my_thread_id,
                                    //int thread_count) {
       //return nullptr;
     //}
 
-    void CleanUp();
+    void CleanUp() override;
 
-    bool DoInsert(DB &db, ThreadState &thread_state);
+    bool DoInsert(DB &db, ThreadState &thread_state) override;
 
-    bool DoTransaction(DB &db, ThreadState &thread_state);
+    bool DoTransaction(DB &db, ThreadState &thread_state) override;
+
+  protected:
+    std::string table_name_;
+    int field_count_;
+    bool read_all_fields_;
+    bool write_all_fields_;
+    Generator<uint64_t> *field_len_generator_;
+    Generator<uint64_t> *key_generator_;
+    DiscreteGenerator<Operation> op_chooser_;
+    Generator<uint64_t> *key_chooser_;
+    Generator<uint64_t> *field_chooser_;
+    Generator<uint64_t> *scan_len_chooser_;
+    CounterGenerator insert_key_sequence_;
+    bool ordered_inserts_;
+    size_t record_count_;
 };
 
 }  // namespace cycsb
