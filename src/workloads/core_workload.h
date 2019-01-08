@@ -119,6 +119,8 @@ class CoreWorkload : public Workload {
     ///
     void Init(utils::Properties p) override;
 
+    Generator<uint64_t> *GetFieldLenGenerator(const utils::Properties &p);
+
     //ThreadState* InitThread(utils::Properties p, int my_thread_id,
                                    //int thread_count) {
       //return nullptr;
