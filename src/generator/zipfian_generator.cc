@@ -7,6 +7,7 @@ namespace cycsb {
 uint64_t ZipfianGenerator::NextLong(uint64_t item_count) {
   if (item_count != count_for_zeta_) {
     std::lock_guard<std::mutex> lock(mutex_);
+
     if (item_count > count_for_zeta_) {
       zetan_ = Zeta(count_for_zeta_, item_count, theta_, zetan_);
       eta_ = (1 - std::pow(2.0 / items_, 1 - theta_)) / (1 - zeta_to_theta_ / zetan_);
@@ -35,6 +36,11 @@ uint64_t ZipfianGenerator::NextLong(uint64_t item_count) {
 
 uint64_t ZipfianGenerator::NextValue() {
   return NextLong(items_);
+}
+
+uint64_t ZipfianGenerator::LastValue() {
+  std::lock_guard<std::mutex> lock(mutex_);
+  return last_value_;
 }
 
 double ZipfianGenerator::ZetaStatic(uint64_t n, double theta) {

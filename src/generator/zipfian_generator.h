@@ -41,17 +41,19 @@ class ZipfianGenerator : public Generator<uint64_t> {
 
     uint64_t NextLong(uint64_t item_count);
     uint64_t NextValue() override;
+    uint64_t LastValue() override;
 
    private:
-        static double ZetaStatic(uint64_t n, double theta);
-        static double ZetaStatic(uint64_t st, uint64_t n, double theta,
-                                 double initial_sum);
-        double Zeta(uint64_t n, double theta);
-        double Zeta(uint64_t st, uint64_t n, double theta, double initial_sum);
+    static double ZetaStatic(uint64_t n, double theta);
+    static double ZetaStatic(uint64_t st, uint64_t n, double theta,
+        double initial_sum);
+    double Zeta(uint64_t n, double theta);
+    double Zeta(uint64_t st, uint64_t n, double theta, double initial_sum);
 
     uint64_t items_, base_, count_for_zeta_;
     double zipfian_const_, theta_, zeta_to_theta_, alpha_, zetan_, eta_;
     std::mutex mutex_;
+    uint64_t last_value_;
     bool allow_item_count_decrease_ = false;
 };
 
