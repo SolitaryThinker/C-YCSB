@@ -5,6 +5,7 @@ C++ port of Yahoo! Cloud System Benchmark (YCSB)
 The original Java version of YCSB can be found here:  
 https://github.com/brianfrankcooper/YCSB
 
+
 ### Differences with the Java version:
 - C-YCSB is in C++!
 - Runs faster (probably)
@@ -27,3 +28,7 @@ Example:
 - move all exceptions into exceptions.h?
 - benchmark overhead of serialization for Java YCSB
 - handle deleting existing db?
+
+### Credits:
+A few files were based off of Jinglei Ren's port:  
+https://github.com/basicthinker/YCSB-C
