@@ -40,7 +40,7 @@ class ZipfianGenerator : public Generator<uint64_t> {
     }
 
     uint64_t NextLong(uint64_t item_count);
-    uint64_t NextValue();
+    uint64_t NextValue() override;
 
    private:
         static double ZetaStatic(uint64_t n, double theta);

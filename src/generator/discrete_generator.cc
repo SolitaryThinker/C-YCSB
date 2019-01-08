@@ -1,6 +1,6 @@
 //
 //  discrete_generator.cc
-//  YCSB-C
+//  CYCSB
 //
 //  Created by Jinglei Ren on 12/6/14.
 //  Modified by William Lin

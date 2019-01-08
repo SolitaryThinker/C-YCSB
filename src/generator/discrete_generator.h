@@ -1,6 +1,6 @@
 //
 //  discrete_generator.h
-//  YCSB-C
+//  CYCSB
 //
 //  Created by Jinglei Ren on 12/6/14.
 //  Modified by William Lin
@@ -24,8 +24,8 @@ class DiscreteGenerator : public Generator<T> {
     DiscreteGenerator() : sum_(0) { }
     void AddValue(T value, double weight);
 
-    T NextValue();
-    T LastValue() {
+    T NextValue() override;
+    T LastValue() override {
       if (values_.empty()) {
         last_ = NextValue();
       }
