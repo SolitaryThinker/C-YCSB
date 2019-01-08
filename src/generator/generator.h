@@ -3,11 +3,11 @@
 
 namespace cycsb {
 
-template <typename Value>
+template <typename T>
 class Generator {
     public:
-        virtual Value NextValue() = 0;
-        virtual Value LastValue() = 0;
+        virtual T NextValue() = 0;
+        virtual T LastValue() = 0;
         virtual ~Generator() { }
 };
 
