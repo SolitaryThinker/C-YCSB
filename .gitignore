@@ -32,5 +32,9 @@ build/
 *.out
 *.app
 
+# Doxygen files
+html/
+latex/
+
 template.h
 tmp.cc
