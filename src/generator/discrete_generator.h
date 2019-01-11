@@ -10,11 +10,14 @@
 #ifndef CYCSB_GENERATOR_DISCRETE_GENERATOR_H_
 #define CYCSB_GENERATOR_DISCRETE_GENERATOR_H_
 
-#include "generator/generator.h"
 #include <atomic>
+#include <cassert>
 #include <mutex>
 #include <string>
 #include <vector>
+
+#include "generator/generator.h"
+#include "util/utils.h"
 
 namespace cycsb {
 
@@ -25,6 +28,7 @@ class DiscreteGenerator : public Generator<T> {
     void AddValue(T value, double weight);
 
     T NextValue() override;
+
     T LastValue() override {
       if (values_.empty()) {
         last_ = NextValue();
@@ -38,6 +42,22 @@ class DiscreteGenerator : public Generator<T> {
     std::atomic<T> last_;
     std::mutex mutex_;
 };
+
+template <typename T>
+T DiscreteGenerator<T>::NextValue() {
+  mutex_.lock();
+  double chooser = utils::RandomDouble();
+  mutex_.unlock();
+
+  for (auto p = values_.cbegin(); p != values_.cend(); ++p) {
+    if (chooser < p->second / sum_) {
+      return last_ = p->first;
+    }
+    chooser -= p->second / sum_;
+  }
+
+  assert(false);
+}
 
 }  // namespace cycsb
 
