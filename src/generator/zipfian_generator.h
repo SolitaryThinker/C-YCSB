@@ -11,17 +11,17 @@ namespace cycsb {
 
 class ZipfianGenerator : public Generator<uint64_t> {
   public:
-    static constexpr double const kZipfianConst = 0.99;
+    static constexpr double const zipfian_constant = 0.99;
 
     ZipfianGenerator(uint64_t items) : ZipfianGenerator(0, items - 1) {
     }
 
     ZipfianGenerator(uint64_t min, uint64_t max)
-      : ZipfianGenerator(min, max, kZipfianConst) {
+      : ZipfianGenerator(min, max, zipfian_constant) {
     }
 
     ZipfianGenerator(uint64_t min, uint64_t max, double zipfian_const)
-      : ZipfianGenerator(min, max, kZipfianConst,
+      : ZipfianGenerator(min, max, zipfian_constant,
                          ZetaStatic(max - min + 1, zipfian_const)) {
     }
 
