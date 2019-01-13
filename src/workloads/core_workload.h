@@ -1,3 +1,12 @@
+//
+//  core_workload.h
+//  CYCSB
+//
+//  Created by Jinglei Ren on 12/9/14.
+//  Modified by William Lin
+//  Copyright (c) 2014 Jinglei Ren <jinglei@ren.systems>.
+//
+
 #ifndef CYCSB_WORKLOADS_CORE_WORKLOAD_H_
 #define CYCSB_WORKLOADS_CORE_WORKLOAD_H_
 
@@ -88,6 +97,12 @@ class CoreWorkload : public Workload {
     static const std::string request_distribution_default;
 
     ///
+    /// The name of the property for the min scan length (number of records).
+    ///
+    static const std::string min_scan_length_property;
+    static const std::string min_scan_length_default;
+
+    ///
     /// The name of the property for the max scan length (number of records).
     ///
     static const std::string max_scan_length_property;
@@ -132,20 +147,39 @@ class CoreWorkload : public Workload {
 
     bool DoTransaction(DB &db, ThreadState &thread_state) override;
 
+    CoreWorkload() :
+      field_count_(0), read_all_fields_(false), write_all_fields_(false),
+      field_len_generator_(NULL), key_sequence_(NULL), operation_chooser_(NULL),
+      key_chooser_(NULL), field_chooser_(NULL), scan_len_chooser_(NULL),
+      insert_key_sequence_(3), ordered_inserts_(true), record_count_(0) {
+    }
+
+    virtual ~CoreWorkload() {
+      if (field_len_generator_) delete field_len_generator_;
+      if (key_sequence_) delete key_sequence_;
+      if (operation_chooser_) delete operation_chooser_;
+      if (key_chooser_) delete key_chooser_;
+      if (field_chooser_) delete field_chooser_;
+      if (scan_len_chooser_) delete scan_len_chooser_;
+    }
+
   protected:
+    DiscreteGenerator<Operation> *InitializeOperationChooser(utils::Properties &p);
+    Generator<uint64_t> *InitializeKeyChooser(utils::Properties &p);
+
     std::string table_name_;
     int field_count_;
     bool read_all_fields_;
     bool write_all_fields_;
     Generator<uint64_t> *field_len_generator_;
-    Generator<uint64_t> *key_generator_;
-    DiscreteGenerator<Operation> op_chooser_;
+    Generator<uint64_t> *key_sequence_;
+    DiscreteGenerator<Operation> *operation_chooser_;
     Generator<uint64_t> *key_chooser_;
     Generator<uint64_t> *field_chooser_;
     Generator<uint64_t> *scan_len_chooser_;
     CounterGenerator insert_key_sequence_;
     bool ordered_inserts_;
-    size_t record_count_;
+    uint64_t record_count_;
 };
 
 }  // namespace cycsb
