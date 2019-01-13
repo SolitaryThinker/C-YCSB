@@ -48,8 +48,8 @@ class ScrambledZipfianGenerator : public Generator<uint64_t> {
       if (generator_) delete generator_;
     }
 
-    uint64_t NextValue();
-    uint64_t LastValue();
+    uint64_t NextValue() override;
+    uint64_t LastValue() override;
 
   private:
     uint64_t min_, max_, item_count_;
