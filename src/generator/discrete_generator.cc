@@ -13,10 +13,5 @@
 
 namespace cycsb {
 
-template <typename T>
-void DiscreteGenerator<T>::AddValue(T value, double weight) {
-  values_.push_back(std::make_pair(value, weight));
-  sum_ += weight;
-}
 
 }  // namespace cycsb

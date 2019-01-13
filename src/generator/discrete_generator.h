@@ -44,6 +44,12 @@ class DiscreteGenerator : public Generator<T> {
 };
 
 template <typename T>
+void DiscreteGenerator<T>::AddValue(T value, double weight) {
+  values_.push_back(std::make_pair(value, weight));
+  sum_ += weight;
+}
+
+template <typename T>
 T DiscreteGenerator<T>::NextValue() {
   mutex_.lock();
   double chooser = utils::RandomDouble();
