@@ -1,6 +1,7 @@
 #include "workloads/core_workload.h"
 
 #include <climits>
+#include <iostream>
 
 #include "core/thread_state.h"
 #include "generator/const_generator.h"
@@ -8,6 +9,7 @@
 #include "generator/zipfian_generator.h"
 #include "generator/scrambled_zipfian_generator.h"
 #include "generator/skewed_latest_generator.h"
+#include "util/status.h"
 
 namespace cycsb {
 
@@ -131,6 +133,51 @@ void CoreWorkload::Init(utils::Properties p) {
   // TODO: insertion_retry_limit and insertion_retry_interval
 }
 
+std::string CoreWorkload::BuildKeyName(uint64_t key_num) {
+  if (!ordered_inserts_) {
+    key_num = utils::Hash(key_num);
+  }
+  // TODO: zeropadding
+  return std::string("user").append(std::to_string(key_num));
+}
+
+//ThreadState* InitThread(utils::Properties p, int my_thread_id,
+                               //int thread_count) {
+  //return nullptr;
+//}
+
+void CoreWorkload::CleanUp() { }
+
+bool CoreWorkload::DoInsert(DB &db, ThreadState &thread_state) {
+  uint64_t key_num = key_sequence_->NextValue();
+  std::string db_key = BuildKeyName(key_num);
+  std::string value = std::string(field_len_generator_->NextValue(),
+                                  utils::RandomPrintChar());
+
+  Status status;
+  int num_of_retries = 0;
+  while (true) {
+    status = db.Insert("", db_key, value);
+    if (status.IsOk()) {
+      break;
+    }
+    // TODO: retry here if configured. Without retrying, the load process will
+    // fail if one single insertion fails.
+    if (++num_of_retries <= 0) {
+      std::cerr << "Retrying insertion, retry count: " << num_of_retries << std::endl;
+      // sleep here
+    } else {
+      std::cerr << "Error inserting, not retrying anymore. " << num_of_retries << std::endl;
+      break;
+    }
+  }
+
+  return status.IsOk();
+}
+
+bool CoreWorkload::DoTransaction(DB &db, ThreadState &thread_state) {
+}
+
 Generator<uint64_t> *CoreWorkload::GetFieldLenGenerator(
     const utils::Properties &p) {
   string field_len_dist = p.GetProperty(field_length_distribution_property,
@@ -147,19 +194,6 @@ Generator<uint64_t> *CoreWorkload::GetFieldLenGenerator(
     throw utils::Exception("Unknown field length distribution: " +
         field_len_dist);
   }
-}
-
-//ThreadState* InitThread(utils::Properties p, int my_thread_id,
-                               //int thread_count) {
-  //return nullptr;
-//}
-
-void CoreWorkload::CleanUp() { }
-
-bool CoreWorkload::DoInsert(DB &db, ThreadState &thread_state) {
-}
-
-bool CoreWorkload::DoTransaction(DB &db, ThreadState &thread_state) {
 }
 
 DiscreteGenerator<CoreWorkload::Operation> *

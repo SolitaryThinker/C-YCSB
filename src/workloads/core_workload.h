@@ -134,7 +134,6 @@ class CoreWorkload : public Workload {
     ///
     void Init(utils::Properties p) override;
 
-    Generator<uint64_t> *GetFieldLenGenerator(const utils::Properties &p);
 
     //ThreadState* InitThread(utils::Properties p, int my_thread_id,
                                    //int thread_count) {
@@ -164,6 +163,9 @@ class CoreWorkload : public Workload {
     }
 
   protected:
+    std::string BuildKeyName(uint64_t key_num);
+
+    Generator<uint64_t> *GetFieldLenGenerator(const utils::Properties &p);
     DiscreteGenerator<Operation> *InitializeOperationChooser(utils::Properties &p);
     Generator<uint64_t> *InitializeKeyChooser(utils::Properties &p);
 
