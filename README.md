@@ -31,6 +31,7 @@ Example:
 - exponential generator
 - transactions
 - insertion_retry
+- zeropadding for keys?
 - move all exceptions into exceptions.h?
 - benchmark overhead of serialization for Java YCSB
 - handle deleting existing db?
