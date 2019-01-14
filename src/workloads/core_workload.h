@@ -20,6 +20,17 @@ namespace cycsb {
 class CoreWorkload : public Workload {
   public:
     ///
+    /// Transaction operations supported
+    ///
+    enum Operation {
+      INSERT,
+      READ,
+      UPDATE,
+      SCAN,
+      READ_MODIFY_WRITE
+    };
+
+    ///
     /// The name of the database table to run queries against.
     ///
     static const std::string tablename_property;
@@ -145,6 +156,12 @@ class CoreWorkload : public Workload {
     bool DoInsert(DB &db, ThreadState &thread_state) override;
 
     bool DoTransaction(DB &db, ThreadState &thread_state) override;
+
+    bool DoTransactionRead(DB &db);
+    bool DoTransactionUpdate(DB &db);
+    bool DoTransactionInsert(DB &db);
+    bool DoTransactionScan(DB &db);
+    bool DoTransactionReadModifyWrite(DB &db);
 
     CoreWorkload() :
       field_count_(0), read_all_fields_(false), write_all_fields_(false),

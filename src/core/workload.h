@@ -16,14 +16,6 @@ class Workload {
 
     static const std::string kInsertStartPropertyDefault;
 
-    enum Operation {
-      INSERT,
-      READ,
-      UPDATE,
-      SCAN,
-      READMODIFYWRITE
-    };
-
     virtual void Init(utils::Properties p) { }
 
     virtual ThreadState* InitThread(utils::Properties p, int my_thread_id,

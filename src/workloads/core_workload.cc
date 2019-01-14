@@ -176,6 +176,46 @@ bool CoreWorkload::DoInsert(DB &db, ThreadState &thread_state) {
 }
 
 bool CoreWorkload::DoTransaction(DB &db, ThreadState &thread_state) {
+  Operation operation = operation_chooser_->NextValue();
+  bool sucess;
+
+  switch(operation) {
+    case READ:
+      sucess = DoTransactionRead(db);
+      break;
+    case UPDATE:
+      sucess = DoTransactionUpdate(db);
+      break;
+    case INSERT:
+      sucess = DoTransactionInsert(db);
+      break;
+    case SCAN:
+      sucess = DoTransactionScan(db);
+      break;
+    case READ_MODIFY_WRITE:
+      sucess = DoTransactionReadModifyWrite(db);
+      break;
+    default:
+      sucess = false;
+  }
+
+  return sucess;
+}
+
+bool CoreWorkload::DoTransactionRead(DB &db) {
+  //long key_num =
+}
+
+bool CoreWorkload::DoTransactionUpdate(DB &db) {
+}
+
+bool CoreWorkload::DoTransactionInsert(DB &db) {
+}
+
+bool CoreWorkload::DoTransactionScan(DB &db) {
+}
+
+bool CoreWorkload::DoTransactionReadModifyWrite(DB &db) {
 }
 
 Generator<uint64_t> *CoreWorkload::GetFieldLenGenerator(
@@ -226,7 +266,7 @@ CoreWorkload::InitializeOperationChooser(utils::Properties &p) {
     operation_chooser_->AddValue(SCAN, scan_proportion);
   }
   if (readmodifywrite_proportion > 0) {
-    operation_chooser_->AddValue(READMODIFYWRITE, readmodifywrite_proportion);
+    operation_chooser_->AddValue(READ_MODIFY_WRITE, readmodifywrite_proportion);
   }
 }
 
