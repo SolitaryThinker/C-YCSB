@@ -7,9 +7,7 @@ namespace cycsb {
 
 class Status {
   public:
-    Status() {
-    }
-
+    Status() : name_(NULL), description_(NULL) { }
     Status(std::string name, std::string description)
     : name_(name),
       description_(description_) {
@@ -17,7 +15,6 @@ class Status {
 
     bool operator==(const Status &other_status);
     bool operator!=(const Status &other_status);
-    Status& operator=(const Status &s);
 
     bool IsOk() { return *this == ok || *this == batched_ok; }
 
@@ -48,18 +45,6 @@ inline bool Status::operator==(const Status &other_status) {
 
 inline bool Status::operator!=(const Status &other_status) {
   return !(*this == other_status);
-}
-
-inline Status& Status::operator=(const Status &s) {
-  if (name_ != s.name_) {
-    name_ = s.name_;
-  }
-
-  if (description_ != s.description_) {
-    description_ = s.description_;
-  }
-
-  return *this;
 }
 
 }  // namespace cycsb
