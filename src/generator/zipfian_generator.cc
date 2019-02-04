@@ -1,4 +1,4 @@
-#include "zipfian_generator.h"
+#include "generator/zipfian_generator.h"
 
 #include "util/utils.h"
 
