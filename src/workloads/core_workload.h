@@ -185,6 +185,7 @@ class CoreWorkload : public Workload {
 
   protected:
     std::string BuildKeyName(uint64_t key_num);
+    std::string BuildSingleValue(std::string key);
 
     Generator<uint64_t> *GetFieldLenGenerator(const utils::Properties &p);
     DiscreteGenerator<Operation> *InitializeOperationChooser(utils::Properties &p);

@@ -142,6 +142,12 @@ std::string CoreWorkload::BuildKeyName(uint64_t key_num) {
   return std::string("user").append(std::to_string(key_num));
 }
 
+std::string CoreWorkload::BuildSingleValue(std::string key) {
+  std::string value;
+  // TODO: BuildSingleValue
+  return value;
+}
+
 //ThreadState* InitThread(utils::Properties p, int my_thread_id,
                                //int thread_count) {
   //return nullptr;
@@ -233,10 +239,10 @@ bool CoreWorkload::DoTransactionRead(DB &db) {
 bool CoreWorkload::DoTransactionUpdate(DB &db) {
   bool sucess = false;
 
-  //std::string key_name = BuildKeyName(key_num);
-  //std::string result;
+  std::string key_name = BuildKeyName(key_num);
+  std::string value = BuildSingleValue(key_name);
 
-  //db.Update("", key_name, result);
+  db.Update("", key_name, value);
   return sucess;
 }
 
