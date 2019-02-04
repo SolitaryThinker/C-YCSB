@@ -117,6 +117,7 @@ void CoreWorkload::Init(utils::Properties p) {
   operation_chooser_ = InitializeOperationChooser(p);
 
   // TODO: transaction insert key generator
+  transaction_insert_key_sequence_ = new AcknowledgedCounterGenerator(record_count_);
 
   key_chooser_ = InitializeKeyChooser(p);
 
@@ -202,20 +203,56 @@ bool CoreWorkload::DoTransaction(DB &db, ThreadState &thread_state) {
   return sucess;
 }
 
+uint64_t CoreWorkload::NextKeynum() {
+  uint64_t keynum;
+  //if (keychooser instanceof ExponentialGenerator) {
+    //do {
+      //keynum = transactioninsertkeysequence.lastValue() - keychooser.nextValue().intValue();
+    //} while (keynum < 0);
+  //} else {
+    do {
+      keynum = key_chooser_->NextValue();
+    } while (keynum > transaction_insert_key_sequence_->LastValue());
+  //}
+  return keynum;
+}
+
 bool CoreWorkload::DoTransactionRead(DB &db) {
-  //long key_num =
+  bool sucess = false;
+  uint64_t key_num = NextKeynum();
+
+  std::string key_name = BuildKeyName(key_num);
+  std::string result;
+
+  db.Read("", key_name, result);
+  // data_integrity
+
+  return sucess;
 }
 
 bool CoreWorkload::DoTransactionUpdate(DB &db) {
+  bool sucess = false;
+
+  //std::string key_name = BuildKeyName(key_num);
+  //std::string result;
+
+  //db.Update("", key_name, result);
+  return sucess;
 }
 
 bool CoreWorkload::DoTransactionInsert(DB &db) {
+  bool sucess = false;
+  return sucess;
 }
 
 bool CoreWorkload::DoTransactionScan(DB &db) {
+  bool sucess = false;
+  return sucess;
 }
 
 bool CoreWorkload::DoTransactionReadModifyWrite(DB &db) {
+  bool sucess = false;
+  return sucess;
 }
 
 Generator<uint64_t> *CoreWorkload::GetFieldLenGenerator(
@@ -240,6 +277,8 @@ DiscreteGenerator<CoreWorkload::Operation> *
 CoreWorkload::InitializeOperationChooser(utils::Properties &p) {
   using std::stod;
 
+  DiscreteGenerator<CoreWorkload::Operation> *operation_chooser;
+
   const double read_proportion = stod(p.GetProperty(read_proportion_property,
                                                     read_proportion_default));
   const double update_proportion = stod(p.GetProperty(update_proportion_property,
@@ -251,7 +290,7 @@ CoreWorkload::InitializeOperationChooser(utils::Properties &p) {
   const double readmodifywrite_proportion = stod(p.GetProperty(
         readmodifywrite_proportion_property, readmodifywrite_proportion_default));
 
-  operation_chooser_ = new DiscreteGenerator<Operation>;
+  operation_chooser = new DiscreteGenerator<Operation>;
 
   if (read_proportion > 0) {
     operation_chooser_->AddValue(READ, read_proportion);
@@ -268,10 +307,14 @@ CoreWorkload::InitializeOperationChooser(utils::Properties &p) {
   if (readmodifywrite_proportion > 0) {
     operation_chooser_->AddValue(READ_MODIFY_WRITE, readmodifywrite_proportion);
   }
+
+  return operation_chooser;
 }
 
 Generator<uint64_t> *
 CoreWorkload::InitializeKeyChooser(utils::Properties &p) {
+  Generator<uint64_t> *key_chooser = NULL;
+
   std::string request_dist = p.GetProperty(request_distribution_property,
                                            request_distribution_default);
 
@@ -279,7 +322,7 @@ CoreWorkload::InitializeKeyChooser(utils::Properties &p) {
                                                       insert_proportion_default));
 
   if (request_dist == "uniform") {
-    key_chooser_ = new UniformGenerator(0, record_count_ - 1);
+    key_chooser = new UniformGenerator(0, record_count_ - 1);
 
   } else if (request_dist == "zipfian") {
     // If the number of keys changes, we don't want to change popular keys.
@@ -289,14 +332,15 @@ CoreWorkload::InitializeKeyChooser(utils::Properties &p) {
     // and pick another key.
     int op_count = std::stoi(p.GetProperty(operation_count_property));
     int new_keys = (int)(op_count * insert_proportion * 2); // a fudge factor
-    key_chooser_ = new ScrambledZipfianGenerator(record_count_ + new_keys);
+    key_chooser = new ScrambledZipfianGenerator(record_count_ + new_keys);
 
   } else if (request_dist == "latest") {
-    key_chooser_ = new SkewedLatestGenerator(insert_key_sequence_);
+    key_chooser = new SkewedLatestGenerator(insert_key_sequence_);
 
   } else {
     throw utils::Exception("Unknown request distribution: " + request_dist);
   }
+  return key_chooser;
 }
 
 }  // namespace cycsb

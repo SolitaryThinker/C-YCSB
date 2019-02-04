@@ -10,6 +10,7 @@
 #ifndef CYCSB_WORKLOADS_CORE_WORKLOAD_H_
 #define CYCSB_WORKLOADS_CORE_WORKLOAD_H_
 
+#include "generator/acknowledged_counter_generator.h"
 #include "generator/generator.h"
 #include "generator/discrete_generator.h"
 #include "generator/counter_generator.h"
@@ -157,6 +158,8 @@ class CoreWorkload : public Workload {
 
     bool DoTransaction(DB &db, ThreadState &thread_state) override;
 
+    uint64_t NextKeynum();
+
     bool DoTransactionRead(DB &db);
     bool DoTransactionUpdate(DB &db);
     bool DoTransactionInsert(DB &db);
@@ -176,6 +179,7 @@ class CoreWorkload : public Workload {
       if (operation_chooser_) delete operation_chooser_;
       if (key_chooser_) delete key_chooser_;
       if (field_chooser_) delete field_chooser_;
+      if (transaction_insert_key_sequence_) delete transaction_insert_key_sequence_;
       if (scan_len_chooser_) delete scan_len_chooser_;
     }
 
@@ -195,6 +199,7 @@ class CoreWorkload : public Workload {
     DiscreteGenerator<Operation> *operation_chooser_;
     Generator<uint64_t> *key_chooser_;
     Generator<uint64_t> *field_chooser_;
+    AcknowledgedCounterGenerator *transaction_insert_key_sequence_;
     Generator<uint64_t> *scan_len_chooser_;
     CounterGenerator insert_key_sequence_;
     bool ordered_inserts_;
