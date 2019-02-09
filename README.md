@@ -8,6 +8,8 @@ https://github.com/brianfrankcooper/YCSB
 
 ### Differences with the Java version:
 - C-YCSB is in C++!
+- C-YCSB does not assume the structure of values. YCSB always maps a
+    multi-field record to every single key in a key-value store.
 - No effects of from the Java garbage collector
 - Runs faster (probably)
 - Less overhead
