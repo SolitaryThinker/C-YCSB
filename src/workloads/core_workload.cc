@@ -142,9 +142,12 @@ std::string CoreWorkload::BuildKeyName(uint64_t key_num) {
   return std::string("user").append(std::to_string(key_num));
 }
 
-std::string CoreWorkload::BuildSingleValue(std::string key) {
+inline std::string CoreWorkload::BuildSingleValue() {
   std::string value;
-  // TODO: BuildSingleValue
+  // NOTE: probably can be more efficient...
+  for (int i = 0; i < field_len_generator_->NextValue(); i++) {
+    value += "X";
+  }
   return value;
 }
 
@@ -224,31 +227,40 @@ uint64_t CoreWorkload::NextKeynum() {
 }
 
 bool CoreWorkload::DoTransactionRead(DB &db) {
-  bool sucess = false;
   uint64_t key_num = NextKeynum();
 
   std::string key_name = BuildKeyName(key_num);
   std::string result;
 
-  db.Read("", key_name, result);
+  Status status = db.Read("", key_name, result);
   // data_integrity
 
-  return sucess;
+  return status.IsOk();
 }
 
 bool CoreWorkload::DoTransactionUpdate(DB &db) {
   bool sucess = false;
 
-  std::string key_name = BuildKeyName(key_num);
-  std::string value = BuildSingleValue(key_name);
+  uint64_t key_num = NextKeynum();
 
-  db.Update("", key_name, value);
-  return sucess;
+  std::string key_name = BuildKeyName(key_num);
+  std::string value = BuildSingleValue();
+
+  Status status = db.Update("", key_name, value);
+
+  return status.IsOk();
 }
 
 bool CoreWorkload::DoTransactionInsert(DB &db) {
   bool sucess = false;
-  return sucess;
+
+  uint64_t key_num = transaction_insert_key_sequence_->NextValue();
+  std::string key_name = BuildKeyName(key_num);
+  std::string value = BuildSingleValue();
+
+  Status status = db.Insert("", key_name, value);
+
+  return status.IsOk();
 }
 
 bool CoreWorkload::DoTransactionScan(DB &db) {
