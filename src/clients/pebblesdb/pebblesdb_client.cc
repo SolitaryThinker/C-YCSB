@@ -9,6 +9,9 @@ namespace cycsb {
 
 leveldb::DB *PebblesDBClient::db_ = nullptr;
 
+/**
+ * Initializes the client.
+ */
 void PebblesDBClient::Init() {
   if (db_ == nullptr) {
     leveldb::Options options;
@@ -22,10 +25,20 @@ void PebblesDBClient::Init() {
   }
 }
 
+/**
+ * Close the client.
+ */
 void PebblesDBClient::Close() {
   delete db_;
 }
 
+/**
+ * Reads a value from database.
+ *
+ * \param       table  Not used
+ * \param       key    Key of the entry
+ * \param[out]  result Result from the read
+ */
 Status PebblesDBClient::Read(const std::string &table, const std::string &key,
                           std::string &result) {
   leveldb::ReadOptions options;
@@ -39,8 +52,16 @@ Status PebblesDBClient::Read(const std::string &table, const std::string &key,
   }
 }
 
+/**
+ * Scan over a range of entries in the database.
+ *
+#* \param       table        Not used
+ * \param       key          Starting key of the scan
+ * \param       entry_count  Number of entries to scan
+ * \param[out]  results      Results from the scan operation
+ */
 Status PebblesDBClient::Scan(const std::string &table, const std::string &key,
-                          int record_count,
+                          int entry_count,
                           std::vector<KVPair> &results) {
   leveldb::ReadOptions options;
   leveldb::Iterator *iterator = db_->NewIterator(options);
@@ -62,11 +83,25 @@ Status PebblesDBClient::Scan(const std::string &table, const std::string &key,
   return Status::ok;
 }
 
+/**
+ * Updates a value in the database.
+ *
+ * \param  table Not used
+ * \param  key   Key of the entry to be updated
+ * \param  value New value for the entry
+ */
 Status PebblesDBClient::Update(const std::string &table, const std::string &key,
                             const std::string &value) {
   return Status::not_implemented;
 }
 
+/**
+ * Inserts a new entry in to the database.
+ *
+ * \param  table Not used
+ * \param  key   Key of the new entry
+ * \param  value Value of the new entry
+ */
 Status PebblesDBClient::Insert(const std::string &table, const std::string &key,
                             const std::string &value) {
   leveldb::WriteOptions options;
@@ -80,6 +115,12 @@ Status PebblesDBClient::Insert(const std::string &table, const std::string &key,
   }
 }
 
+/**
+ * Deletes an entry from the database.
+ *
+ * \param  table Not used
+ * \param  key   Key of the entry to be deleted
+ */
 Status PebblesDBClient::Delete(const std::string &table, const std::string &key) {
   return Status::not_implemented;
 }

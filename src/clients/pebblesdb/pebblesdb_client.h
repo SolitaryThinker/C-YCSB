@@ -18,7 +18,7 @@ class PebblesDBClient : public DB {
              std::string &result) override;
 
     Status Scan(const std::string &table, const std::string &key,
-             int record_count,
+             int entry_count,
              std::vector<KVPair> &results) override;
 
     Status Update(const std::string &table, const std::string &key,

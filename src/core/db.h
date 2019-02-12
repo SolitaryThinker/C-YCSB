@@ -112,7 +112,7 @@ class DB {
     }
 
     virtual Status Scan(const std::string &table, const std::string &key,
-                     int record_count,
+                     int entry_count,
                      std::vector<KVPair> &results) {
       return Status::not_implemented;
     }
