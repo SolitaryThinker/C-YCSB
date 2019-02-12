@@ -1,6 +1,7 @@
 #include "pebblesdb_client.h"
 
 #include "pebblesdb/options.h"
+#include "pebblesdb/iterator.h"
 
 #include <iostream>
 
@@ -40,8 +41,25 @@ Status PebblesDBClient::Read(const std::string &table, const std::string &key,
 
 Status PebblesDBClient::Scan(const std::string &table, const std::string &key,
                           int record_count,
-                          std::vector<std::vector<KVPair>> &results) {
-  return Status::not_implemented;
+                          std::vector<KVPair> &results) {
+  leveldb::ReadOptions options;
+  leveldb::Iterator *iterator = db_->NewIterator(options);
+  uint64_t count = 0;
+
+  iterator->Seek(leveldb::Slice(key));
+
+  while(iterator->Valid() && count < record_count) {
+    results.push_back(std::make_pair(iterator->key().ToString(),
+                                     iterator->value().ToString()));
+    iterator->Next();
+    count++;
+  }
+  if (count < record_count) {
+    std::cout << "Only scanned " << count << " records out of "
+      << record_count << "." << std::endl;
+  }
+
+  return Status::ok;
 }
 
 Status PebblesDBClient::Update(const std::string &table, const std::string &key,
