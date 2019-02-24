@@ -151,11 +151,6 @@ inline std::string CoreWorkload::BuildSingleValue() {
   return value;
 }
 
-//ThreadState* InitThread(utils::Properties p, int my_thread_id,
-                               //int thread_count) {
-  //return nullptr;
-//}
-
 void CoreWorkload::CleanUp() { }
 
 bool CoreWorkload::DoInsert(DB &db, ThreadState &thread_state) {
@@ -227,6 +222,7 @@ uint64_t CoreWorkload::NextKeynum() {
 }
 
 bool CoreWorkload::DoTransactionRead(DB &db) {
+  // choose random key
   uint64_t key_num = NextKeynum();
 
   std::string key_name = BuildKeyName(key_num);
@@ -239,8 +235,7 @@ bool CoreWorkload::DoTransactionRead(DB &db) {
 }
 
 bool CoreWorkload::DoTransactionUpdate(DB &db) {
-  bool sucess = false;
-
+  // choose random key
   uint64_t key_num = NextKeynum();
 
   std::string key_name = BuildKeyName(key_num);
@@ -252,7 +247,6 @@ bool CoreWorkload::DoTransactionUpdate(DB &db) {
 }
 
 bool CoreWorkload::DoTransactionInsert(DB &db) {
-  bool sucess = false;
 
   uint64_t key_num = transaction_insert_key_sequence_->NextValue();
   std::string key_name = BuildKeyName(key_num);
@@ -260,17 +254,40 @@ bool CoreWorkload::DoTransactionInsert(DB &db) {
 
   Status status = db.Insert("", key_name, value);
 
+  transaction_insert_key_sequence_->Acknowledge(key_num);
+
   return status.IsOk();
 }
 
 bool CoreWorkload::DoTransactionScan(DB &db) {
-  bool sucess = false;
-  return sucess;
+  std::vector<DB::KVPair> results;
+  // choose random key
+  uint64_t key_num = NextKeynum();
+  std::string start_key_name = BuildKeyName(key_num);
+  // choose a random scan length
+  uint64_t len = scan_len_chooser_->NextValue();
+  Status status = db.Scan("", start_key_name, len, results);
+
+  return status.IsOk();
 }
 
 bool CoreWorkload::DoTransactionReadModifyWrite(DB &db) {
-  bool sucess = false;
-  return sucess;
+  uint64_t key_num = NextKeynum();
+  std::string key_name = BuildKeyName(key_num);
+  std::string value = BuildSingleValue();
+  std::string result;
+
+  // do the transaction
+  // TODO: measurements?
+  Status status = db.Read("", key_name, result);
+  if (!status.IsOk()) {
+    std::cout << "Read failed during read modify write" << std::endl;
+    return false;
+  }
+
+  status = db.Update("", key_name, value);
+
+  return status.IsOk();
 }
 
 Generator<uint64_t> *CoreWorkload::GetFieldLenGenerator(
