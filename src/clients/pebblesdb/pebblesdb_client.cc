@@ -10,7 +10,7 @@ namespace cycsb {
 leveldb::DB *PebblesDBClient::db_ = nullptr;
 
 /**
- * Initializes the client.
+ * \brief Initializes the client.
  */
 void PebblesDBClient::Init() {
   if (db_ == nullptr) {
@@ -26,14 +26,14 @@ void PebblesDBClient::Init() {
 }
 
 /**
- * Close the client.
+ * \brief Close the client.
  */
 void PebblesDBClient::Close() {
   delete db_;
 }
 
 /**
- * Reads a value from database.
+ * \brief Reads a value from database.
  *
  * \param       table  Not used
  * \param       key    Key of the entry
@@ -53,7 +53,7 @@ Status PebblesDBClient::Read(const std::string &table, const std::string &key,
 }
 
 /**
- * Scan over a range of entries in the database.
+ * \brief Scan over a range of entries in the database.
  *
 #* \param       table        Not used
  * \param       key          Starting key of the scan
@@ -69,22 +69,22 @@ Status PebblesDBClient::Scan(const std::string &table, const std::string &key,
 
   iterator->Seek(leveldb::Slice(key));
 
-  while(iterator->Valid() && count < record_count) {
+  while(iterator->Valid() && count < entry_count) {
     results.push_back(std::make_pair(iterator->key().ToString(),
                                      iterator->value().ToString()));
     iterator->Next();
     count++;
   }
-  if (count < record_count) {
+  if (count < entry_count) {
     std::cout << "Only scanned " << count << " records out of "
-      << record_count << "." << std::endl;
+      << entry_count << "." << std::endl;
   }
 
   return Status::ok;
 }
 
 /**
- * Updates a value in the database.
+ * \brief Updates a value in the database.
  *
  * \param  table Not used
  * \param  key   Key of the entry to be updated
@@ -96,7 +96,7 @@ Status PebblesDBClient::Update(const std::string &table, const std::string &key,
 }
 
 /**
- * Inserts a new entry in to the database.
+ * \brief Inserts a new entry in to the database.
  *
  * \param  table Not used
  * \param  key   Key of the new entry
@@ -116,7 +116,7 @@ Status PebblesDBClient::Insert(const std::string &table, const std::string &key,
 }
 
 /**
- * Deletes an entry from the database.
+ * \brief Deletes an entry from the database.
  *
  * \param  table Not used
  * \param  key   Key of the entry to be deleted

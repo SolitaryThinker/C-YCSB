@@ -28,6 +28,7 @@ class PebblesDBClient : public DB {
                const std::string &values) override;
 
     Status Delete(const std::string &table, const std::string &key) override;
+
   private:
     static leveldb::DB *db_;
 };
